@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>اليوم العالمي لإدارة المشاريع | نادي نظم المعلومات الإدارية</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A2A5E; --blue:#1D6FE8; --sky:#E8F1FF; --ice:#F6F9FF; --ink:#0F1B33; --muted:#5B6B88; --line:#D3E0F5; --white:#fff;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow:hidden;background:var(--navy)}
+body{font-family:"IBM Plex Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;color:var(--ink);
+  user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation;cursor:default}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+button:focus-visible{outline:3px solid #fff;outline-offset:3px}
+.screen{position:fixed;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding:clamp(16px,3vw,48px)}
+.screen.active{display:flex;animation:fade .45s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+
+/* ---------- Welcome ---------- */
+#welcome{background:radial-gradient(1200px 700px at 85% 10%,#1D6FE8 0%,transparent 60%),linear-gradient(160deg,#0A2A5E,#061936);color:#fff;text-align:center;overflow:hidden}
+#welcome::before{content:"";position:absolute;inset:auto -10% -22% -10%;height:46%;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 2px,transparent 2px 90px);
+  mask:linear-gradient(transparent,#000);-webkit-mask:linear-gradient(transparent,#000)}
+.gantt{position:absolute;inset:0;pointer-events:none;opacity:.9}
+.gantt i{position:absolute;height:14px;border-radius:8px;background:rgba(255,255,255,.09);animation:slide 9s ease-in-out infinite alternate}
+.gantt i:nth-child(1){top:12%;right:6%;width:30%}
+.gantt i:nth-child(2){top:20%;right:22%;width:24%;animation-delay:-2s}
+.gantt i:nth-child(3){bottom:26%;left:8%;width:28%;animation-delay:-4s}
+.gantt i:nth-child(4){bottom:18%;left:20%;width:20%;animation-delay:-6s}
+@keyframes slide{to{transform:translateX(-40px)}}
+.logo{width:clamp(110px,16vw,170px);aspect-ratio:1;border-radius:28%;background:#fff;display:grid;place-items:center;
+  box-shadow:0 18px 50px rgba(0,0,0,.35);margin-bottom:clamp(18px,3vw,34px);position:relative}
+.logo span{font-weight:700;font-size:clamp(34px,5vw,56px);color:var(--navy);letter-spacing:1px;direction:ltr}
+.logo::after{content:"";position:absolute;bottom:16%;left:22%;right:22%;height:6px;border-radius:4px;background:var(--blue)}
+.club{font-size:clamp(16px,2vw,24px);opacity:.85;margin-bottom:10px}
+h1{font-size:clamp(30px,5.4vw,76px);line-height:1.2;font-weight:700;max-width:18ch}
+.sub{margin-top:14px;font-size:clamp(16px,2vw,26px);opacity:.8;max-width:34ch}
+.btn-start{margin-top:clamp(24px,4vw,48px);background:#fff;color:var(--navy);font-weight:700;font-size:clamp(20px,2.6vw,34px);
+  padding:.55em 1.8em;border-radius:999px;box-shadow:0 12px 34px rgba(0,0,0,.3);transition:transform .15s,box-shadow .15s}
+.btn-start:active{transform:scale(.96)}
+.hint{margin-top:18px;font-size:clamp(13px,1.4vw,18px);opacity:.6}
+
+/* ---------- Challenge ---------- */
+#challenge,#map{background:var(--ice);justify-content:flex-start;gap:clamp(12px,2vw,24px);padding-top:clamp(14px,2.4vw,34px)}
+.bar{width:min(1200px,100%);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--navy);font-size:clamp(14px,1.6vw,20px)}
+.brand b{width:38px;height:38px;border-radius:12px;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:14px;direction:ltr}
+.dots{display:none;gap:8px}
+.dots i{width:28px;height:8px;border-radius:5px;background:var(--line);transition:background .3s}
+.dots i.on{background:var(--blue)}
+.case{width:min(1200px,100%);flex:1;min-height:0;display:flex;flex-direction:column;background:#fff;border:2px solid var(--line);
+  border-radius:28px;padding:clamp(18px,3vw,44px);box-shadow:0 20px 60px rgba(10,42,94,.08);position:relative;overflow:hidden}
+.case::before{content:"";position:absolute;top:0;right:0;bottom:0;width:10px;background:var(--blue)}
+.case-top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.tag{background:var(--sky);color:var(--blue);font-weight:700;padding:.35em 1em;border-radius:999px;font-size:clamp(14px,1.6vw,20px)}
+.btn-swap{background:var(--sky);color:var(--navy);font-weight:700;font-size:clamp(14px,1.6vw,20px);padding:.55em 1.2em;border-radius:999px;border:2px solid var(--line);transition:background .2s}
+.btn-swap:active{background:var(--line)}
+.btn-swap .ic{display:inline-block;transition:transform .5s}
+.btn-swap.spin .ic{transform:rotate(360deg)}
+.case-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,1.6vw,20px);transition:opacity .25s,transform .25s}
+.case-body.out{opacity:0;transform:translateY(10px)}
+.case h2{font-size:clamp(26px,4.2vw,58px);line-height:1.25;color:var(--navy)}
+.case p{font-size:clamp(18px,2.4vw,34px);line-height:1.7;color:var(--ink);max-width:40ch}
+.actions{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.nums{display:flex;gap:clamp(10px,1.6vw,22px);align-items:center}
+.nums-label{font-size:clamp(14px,1.6vw,20px);color:var(--muted);margin-inline-end:6px}
+.num{width:clamp(56px,7vw,92px);aspect-ratio:1;border-radius:24px;background:var(--navy);color:#fff;font-weight:700;font-size:clamp(26px,3.4vw,46px);
+  transition:transform .15s,background .2s;box-shadow:0 8px 20px rgba(10,42,94,.25)}
+.num:active{transform:scale(.93)}
+.num.sel{background:var(--blue)}
+.btn-done{background:var(--blue);color:#fff;font-weight:700;font-size:clamp(18px,2.2vw,30px);padding:.6em 1.8em;border-radius:999px;box-shadow:0 10px 26px rgba(29,111,232,.35)}
+.btn-done:active{transform:scale(.96)}
+
+/* Roadmap */
+#map button:focus-visible{outline-color:var(--blue)}
+.map-head{text-align:center;color:var(--navy)}
+.map-head h2{font-size:clamp(24px,3.6vw,48px);line-height:1.3}
+.map-head p{margin-top:6px;color:var(--muted);font-size:clamp(14px,1.8vw,24px)}
+.roadmap{position:relative;width:min(1200px,100%,calc((100vh - 250px)*1000/440));aspect-ratio:1000/440;margin-top:clamp(4px,1vh,14px)}
+.road{position:absolute;inset:0;width:100%;height:100%}
+.road .bed{fill:none;stroke:#D3E0F5;stroke-width:34;stroke-linecap:round}
+.road .dash{fill:none;stroke:#fff;stroke-width:4;stroke-dasharray:3 16;stroke-linecap:round}
+.st{position:absolute;left:var(--x);top:var(--y);width:var(--sz);height:var(--sz);--sz:clamp(66px,9.5vw,112px);transform:translate(-50%,-50%);
+  display:block;animation:pop .5s cubic-bezier(.2,1.3,.4,1) both;animation-delay:calc(var(--n)*.12s)}
+.st .ci{position:absolute;inset:0;border-radius:50%;background:linear-gradient(150deg,var(--blue),var(--navy));border:5px solid #fff;
+  box-shadow:0 12px 30px rgba(10,42,94,.35);display:grid;place-items:center;font-size:calc(var(--sz)*.42);transition:transform .15s}
+.st:active .ci{transform:scale(.92)}
+.st .nb{position:absolute;top:-6px;right:-6px;width:1.9em;height:1.9em;border-radius:50%;background:#fff;color:var(--navy);font-weight:700;
+  font-size:clamp(12px,1.6vw,20px);display:grid;place-items:center;border:3px solid var(--blue);z-index:2}
+.st .lab{position:absolute;left:50%;transform:translateX(-50%);width:max-content;max-width:clamp(120px,19vw,230px);background:#fff;border:2px solid var(--line);
+  border-radius:16px;padding:.35em .8em;text-align:center;box-shadow:0 6px 16px rgba(10,42,94,.08)}
+.st .lab b{display:block;color:var(--navy);font-size:clamp(13px,1.8vw,24px)}
+.st .lab span{display:block;color:var(--muted);font-size:clamp(11px,1.35vw,18px);line-height:1.5}
+.st.dn .lab{top:calc(100% + 10px)}
+.st.up .lab{bottom:calc(100% + 10px)}
+.st.done .ci{background:linear-gradient(150deg,#22B07D,#0E6B47)}
+.st.done .nb{border-color:#1A9E6B;color:#1A9E6B}
+.map-foot{margin-top:auto;display:flex;gap:14px}
+.btn-finish{background:var(--navy);color:#fff;font-weight:700;font-size:clamp(16px,2vw,26px);padding:.55em 1.8em;border-radius:999px;box-shadow:0 10px 26px rgba(10,42,94,.3)}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(.3);opacity:0}}
+@media (max-width:720px){
+  .roadmap{aspect-ratio:auto;width:100%;display:flex;flex-direction:column;gap:12px;overflow:auto;min-height:0;flex:1}
+  .road{display:none}
+  .st{position:static;transform:none;width:100%;height:auto;display:flex;align-items:center;gap:14px;background:#fff;border:2px solid var(--line);border-radius:22px;padding:10px 14px;text-align:right;animation:none}
+  .st .ci{position:static;flex:none;width:64px;height:64px;font-size:28px}
+  .st .nb{top:6px;right:6px;width:22px;height:22px;font-size:12px}
+  .st .lab{position:static;transform:none;width:auto;max-width:none;border:0;box-shadow:none;padding:0;text-align:right}
+  .map-foot{margin-top:8px}
+}
+/* Timer */
+.timer{display:flex;align-items:center;gap:8px;background:var(--sky);color:var(--navy);font-weight:700;border:2px solid var(--line);
+  border-radius:999px;padding:.4em 1em;font-size:clamp(16px,2vw,26px);font-variant-numeric:tabular-nums;direction:ltr}
+.timer.low{background:#FDECEC;color:#C23030;border-color:#F4B9B9;animation:pulse .8s ease-in-out infinite alternate}
+@keyframes pulse{to{transform:scale(1.06)}}
+.tbar{position:absolute;top:0;left:0;right:10px;height:6px;background:var(--sky)}
+.tbar i{display:block;height:100%;width:100%;background:var(--blue);transform-origin:right center;transition:background .3s}
+.tbar.low i{background:#E24B4B}
+.timeup{position:absolute;inset:0;background:rgba(10,42,94,.92);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:10px;font-weight:700;font-size:clamp(28px,5vw,64px);z-index:5;text-align:center}
+.timeup small{font-size:clamp(16px,2vw,26px);font-weight:400;opacity:.85}
+.timeup.show{display:flex;animation:fade .25s}
+
+/* Question card */
+#overlay{position:fixed;inset:0;background:rgba(6,25,54,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}
+#overlay.show{display:flex;animation:fade .2s}
+.card{background:#fff;border-radius:32px;width:min(900px,100%);padding:clamp(24px,4vw,56px);text-align:center;position:relative;animation:pop .3s cubic-bezier(.2,1.2,.4,1)}
+@keyframes pop{from{transform:scale(.9);opacity:0}}
+.card .big{width:clamp(64px,8vw,96px);aspect-ratio:1;border-radius:26px;background:var(--blue);color:#fff;font-weight:700;font-size:clamp(32px,4vw,52px);display:grid;place-items:center;margin:0 auto 18px}
+.card h3{font-size:clamp(24px,3.6vw,48px);line-height:1.5;color:var(--navy)}
+.card .ctx{margin-top:12px;color:var(--muted);font-size:clamp(14px,1.6vw,20px)}
+.card{max-height:94vh;overflow:auto}
+.opts{display:grid;gap:12px;margin-top:20px;text-align:right}
+.opt{display:flex;align-items:center;gap:14px;width:100%;padding:clamp(12px,1.6vw,20px) clamp(14px,2vw,24px);border-radius:20px;border:2px solid var(--line);
+  background:var(--ice);font-size:clamp(16px,2vw,26px);line-height:1.6;color:var(--ink);text-align:right;transition:background .2s,border-color .2s}
+.opt:active{transform:scale(.99)}
+.opt b{flex:none;width:2em;height:2em;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:.8em}
+.opt.chosen{border-color:var(--blue);background:var(--sky)}
+.fb{display:none;margin-top:16px;padding:clamp(12px,1.6vw,20px);border-radius:20px;text-align:right;font-size:clamp(16px,1.9vw,24px);line-height:1.7}
+.fb strong{display:block;margin-bottom:4px}
+.fb.best{display:block;background:#E5F6EE;color:#0E6B47}
+.fb.ok{display:block;background:#FFF4DB;color:#8A5C00}
+.fb.weak{display:block;background:#FDECEC;color:#A32828}
+.opt.correct{border-color:#1A9E6B;background:#E5F6EE}
+.opts.done .opt{pointer-events:none}
+.opts.done .opt:not(.chosen):not(.correct){opacity:.55}
+.stats{display:none;margin-top:16px;padding:clamp(12px,1.6vw,20px);border-radius:20px;background:var(--ice);border:2px solid var(--line);text-align:right}
+.stats.show{display:block;animation:fade .3s}
+.stats strong{display:block;margin-bottom:10px;color:var(--navy);font-size:clamp(16px,1.9vw,24px)}
+.srow{display:flex;align-items:center;gap:12px;margin:8px 0;font-size:clamp(14px,1.7vw,22px)}
+.srow .sl{flex:none;width:1.9em;height:1.9em;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:700;font-size:.85em}
+.sbar{flex:1;height:clamp(14px,2vh,22px);background:#fff;border:2px solid var(--line);border-radius:999px;overflow:hidden}
+.sbar i{display:block;height:100%;width:0;background:#8DB6F5;border-radius:999px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.srow.me .sbar i{background:var(--blue)}
+.srow.me .sl{background:var(--blue)}
+.srow .sp{flex:none;min-width:3em;text-align:left;font-weight:700;color:var(--navy);font-variant-numeric:tabular-nums}
+.snote{margin-top:8px;color:var(--muted);font-size:clamp(12px,1.4vw,17px)}
+.hintq{margin-top:6px;color:var(--muted);font-size:clamp(14px,1.5vw,19px)}
+.card .close{margin-top:clamp(18px,3vw,32px);background:var(--sky);color:var(--navy);font-weight:700;font-size:clamp(16px,2vw,24px);padding:.55em 2em;border-radius:999px}
+
+/* ---------- End ---------- */
+#end{background:linear-gradient(160deg,#1D6FE8,#0A2A5E);color:#fff;text-align:center}
+.check{width:clamp(90px,12vw,140px);aspect-ratio:1;border-radius:50%;background:#fff;display:grid;place-items:center;margin-bottom:24px;box-shadow:0 16px 44px rgba(0,0,0,.3)}
+.check svg{width:55%}
+#end h1{max-width:20ch}
+#end{gap:0}
+.qrbox{margin-top:clamp(14px,2.4vh,26px);display:flex;align-items:center;gap:clamp(14px,2.4vw,28px);background:#fff;color:var(--navy);
+  border-radius:28px;padding:clamp(12px,1.8vw,22px);box-shadow:0 16px 44px rgba(0,0,0,.3);text-align:right}
+.qrbox svg{width:clamp(120px,min(24vh,22vw),230px);height:auto;display:block;border-radius:12px}
+.qrbox strong{display:block;font-size:clamp(18px,2.4vw,32px);margin-bottom:6px}
+.qrbox span{display:block;font-size:clamp(13px,1.5vw,19px);color:var(--muted);direction:ltr;text-align:right;font-weight:500}
+@media (max-width:640px){.qrbox{flex-direction:column;text-align:center}.qrbox span{text-align:center}}
+#end p{margin-top:14px;font-size:clamp(18px,2.4vw,32px);opacity:.9;max-width:32ch;line-height:1.7}
+.btn-home{margin-top:clamp(16px,3vh,36px);background:#fff;color:var(--navy);font-weight:700;font-size:clamp(18px,2.2vw,28px);padding:.6em 1.8em;border-radius:999px;box-shadow:0 12px 34px rgba(0,0,0,.3)}
+
+@media (max-width:640px){.actions{justify-content:center}.nums-label{display:none}.case::before{width:7px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- 1) شاشة الترحيب -->
+<section id="welcome" class="screen active" aria-label="الشاشة الترحيبية">
+  <div class="gantt" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+  <div class="logo" aria-label="شعار النادي"><span>MIS</span></div>
+  <div class="club">نادي نظم المعلومات الإدارية</div>
+  <h1>اليوم العالمي لإدارة المشاريع</h1>
+  <p class="sub">اختر محطة من خريطة المشروع</p>
+  <button class="btn-start" id="startBtn">ابدأ التحدي</button>
+  <div class="hint">المس الشاشة للبدء</div>
+</section>
+
+<!-- 2أ) خريطة الطريق -->
+<section id="map" class="screen" aria-label="خريطة طريق المشروع المتعثر">
+  <div class="bar">
+    <div class="brand"><b>MIS</b><span>تحدي إدارة المشاريع</span></div>
+  </div>
+  <div class="map-head">
+    <h2>خريطة طريق المشروع المتعثر</h2>
+    <p>في كل مرحلة عقبة. المس محطة لتواجه مشكلتها.</p>
+  </div>
+  <div class="roadmap" id="roadmap">
+    <svg class="road" viewBox="0 0 1000 440" preserveAspectRatio="none" aria-hidden="true">
+      <path class="bed" d="M80 300C185 300 185 120 290 120S395 300 500 300 605 120 710 120 815 300 920 300"/>
+      <path class="dash" d="M80 300C185 300 185 120 290 120S395 300 500 300 605 120 710 120 815 300 920 300"/>
+    </svg>
+  </div>
+  <div class="map-foot"><button class="btn-finish" id="finishBtn">إنهاء الجولة</button></div>
+</section>
+
+<!-- 2) الحالات والتحديات -->
+<section id="challenge" class="screen" aria-label="الحالات والتحديات">
+  <div class="bar">
+    <div class="brand"><b>MIS</b><span>تحدي إدارة المشاريع</span></div>
+    <div class="dots" id="dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+  <div class="case">
+    <div class="tbar" id="tbar"><i></i></div>
+    <div class="timeup" id="timeup">انتهى الوقت!<small>نعود إلى خريطة الطريق</small></div>
+    <div class="case-top">
+      <span class="tag" id="caseTag">الحالة الأولى</span>
+      <span class="timer" id="timer" aria-live="off">⏱ 02:00</span>
+      <button class="btn-swap" id="swapBtn"><span class="ic">🗺️</span> الخريطة</button>
+    </div>
+    <div class="case-body" id="caseBody">
+      <h2 id="caseTitle"></h2>
+      <p id="caseText"></p>
+    </div>
+    <div class="actions">
+      <div class="nums">
+        <span class="nums-label">اختر سؤالاً:</span>
+        <button class="num" data-q="1" aria-label="السؤال 1">1</button>
+        <button class="num" data-q="2" aria-label="السؤال 2">2</button>
+        <button class="num" data-q="3" aria-label="السؤال 3">3</button>
+      </div>
+      <button class="btn-done" id="doneBtn">تم</button>
+    </div>
+  </div>
+</section>
+
+<!-- بطاقة السؤال -->
+<div id="overlay" role="dialog" aria-modal="true">
+  <div class="card">
+    <div class="big" id="qNum">1</div>
+    <h3 id="qText"></h3>
+    <div class="ctx" id="qCtx"></div>
+    <div class="hintq" id="qHint"></div>
+    <div class="opts" id="opts"></div>
+    <div class="fb" id="fb" role="status"></div>
+    <div class="stats" id="stats"></div>
+    <button class="close" id="closeBtn">إغلاق</button>
+  </div>
+</div>
+
+<!-- 4) شاشة النهاية -->
+<section id="end" class="screen" aria-label="شاشة الشكر">
+  <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="#1D6FE8" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></div>
+  <h1>شكراً لمشاركتكم!</h1>
+  <p>سعدنا بتفاعلكم في اليوم العالمي لإدارة المشاريع مع نادي نظم المعلومات الإدارية.</p>
+  <div class="qrbox">
+    <svg viewBox="0 0 37 37" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" role="img" aria-label="رمز QR لرابط النادي"><rect width="37" height="37" fill="#fff"/><path d="M4 4h7v1h-7zM12 4h1v1h-1zM14 4h1v1h-1zM16 4h4v1h-4zM22 4h2v1h-2zM26 4h7v1h-7zM4 5h1v1h-1zM10 5h1v1h-1zM14 5h1v1h-1zM19 5h1v1h-1zM22 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM32 5h1v1h-1zM4 6h1v1h-1zM6 6h3v1h-3zM10 6h1v1h-1zM12 6h2v1h-2zM15 6h3v1h-3zM21 6h2v1h-2zM24 6h1v1h-1zM26 6h1v1h-1zM28 6h3v1h-3zM32 6h1v1h-1zM4 7h1v1h-1zM6 7h3v1h-3zM10 7h1v1h-1zM13 7h1v1h-1zM16 7h1v1h-1zM19 7h2v1h-2zM22 7h1v1h-1zM26 7h1v1h-1zM28 7h3v1h-3zM32 7h1v1h-1zM4 8h1v1h-1zM6 8h3v1h-3zM10 8h1v1h-1zM14 8h2v1h-2zM19 8h3v1h-3zM23 8h1v1h-1zM26 8h1v1h-1zM28 8h3v1h-3zM32 8h1v1h-1zM4 9h1v1h-1zM10 9h1v1h-1zM12 9h3v1h-3zM16 9h3v1h-3zM20 9h1v1h-1zM22 9h1v1h-1zM24 9h1v1h-1zM26 9h1v1h-1zM32 9h1v1h-1zM4 10h7v1h-7zM12 10h1v1h-1zM14 10h1v1h-1zM16 10h1v1h-1zM18 10h1v1h-1zM20 10h1v1h-1zM22 10h1v1h-1zM24 10h1v1h-1zM26 10h7v1h-7zM13 11h1v1h-1zM17 11h1v1h-1zM22 11h2v1h-2zM4 12h1v1h-1zM6 12h1v1h-1zM10 12h2v1h-2zM13 12h1v1h-1zM17 12h1v1h-1zM19 12h3v1h-3zM23 12h1v1h-1zM27 12h1v1h-1zM30 12h1v1h-1zM32 12h1v1h-1zM5 13h3v1h-3zM9 13h1v1h-1zM13 13h1v1h-1zM16 13h1v1h-1zM20 13h1v1h-1zM24 13h4v1h-4zM31 13h2v1h-2zM4 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM10 14h2v1h-2zM15 14h1v1h-1zM17 14h2v1h-2zM20 14h1v1h-1zM22 14h2v1h-2zM26 14h1v1h-1zM29 14h2v1h-2zM32 14h1v1h-1zM5 15h3v1h-3zM11 15h1v1h-1zM14 15h3v1h-3zM18 15h3v1h-3zM28 15h2v1h-2zM4 16h1v1h-1zM7 16h1v1h-1zM10 16h1v1h-1zM13 16h1v1h-1zM17 16h2v1h-2zM22 16h1v1h-1zM24 16h1v1h-1zM26 16h2v1h-2zM32 16h1v1h-1zM8 17h1v1h-1zM11 17h8v1h-8zM21 17h1v1h-1zM24 17h4v1h-4zM31 17h2v1h-2zM4 18h5v1h-5zM10 18h1v1h-1zM12 18h1v1h-1zM14 18h2v1h-2zM19 18h1v1h-1zM23 18h1v1h-1zM25 18h3v1h-3zM32 18h1v1h-1zM8 19h1v1h-1zM16 19h2v1h-2zM24 19h1v1h-1zM26 19h3v1h-3zM4 20h1v1h-1zM6 20h2v1h-2zM10 20h2v1h-2zM13 20h2v1h-2zM17 20h1v1h-1zM19 20h3v1h-3zM24 20h4v1h-4zM32 20h1v1h-1zM7 21h1v1h-1zM11 21h2v1h-2zM14 21h1v1h-1zM16 21h1v1h-1zM20 21h1v1h-1zM22 21h1v1h-1zM24 21h1v1h-1zM26 21h2v1h-2zM30 21h3v1h-3zM4 22h5v1h-5zM10 22h1v1h-1zM12 22h2v1h-2zM15 22h1v1h-1zM17 22h2v1h-2zM20 22h2v1h-2zM23 22h1v1h-1zM28 22h2v1h-2zM32 22h1v1h-1zM11 23h1v1h-1zM14 23h1v1h-1zM16 23h1v1h-1zM18 23h3v1h-3zM22 23h3v1h-3zM26 23h1v1h-1zM28 23h1v1h-1zM4 24h3v1h-3zM8 24h3v1h-3zM13 24h1v1h-1zM17 24h2v1h-2zM21 24h1v1h-1zM24 24h6v1h-6zM31 24h1v1h-1zM12 25h1v1h-1zM17 25h2v1h-2zM21 25h1v1h-1zM24 25h1v1h-1zM28 25h3v1h-3zM32 25h1v1h-1zM4 26h7v1h-7zM12 26h1v1h-1zM14 26h3v1h-3zM19 26h1v1h-1zM24 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM32 26h1v1h-1zM4 27h1v1h-1zM10 27h1v1h-1zM15 27h3v1h-3zM22 27h1v1h-1zM24 27h1v1h-1zM28 27h1v1h-1zM31 27h1v1h-1zM4 28h1v1h-1zM6 28h3v1h-3zM10 28h1v1h-1zM13 28h1v1h-1zM15 28h1v1h-1zM17 28h1v1h-1zM19 28h3v1h-3zM23 28h7v1h-7zM4 29h1v1h-1zM6 29h3v1h-3zM10 29h1v1h-1zM14 29h1v1h-1zM20 29h2v1h-2zM23 29h1v1h-1zM25 29h1v1h-1zM28 29h4v1h-4zM4 30h1v1h-1zM6 30h3v1h-3zM10 30h1v1h-1zM12 30h1v1h-1zM15 30h2v1h-2zM20 30h3v1h-3zM24 30h2v1h-2zM28 30h1v1h-1zM31 30h2v1h-2zM4 31h1v1h-1zM10 31h1v1h-1zM13 31h1v1h-1zM17 31h4v1h-4zM24 31h2v1h-2zM29 31h1v1h-1zM4 32h7v1h-7zM12 32h4v1h-4zM17 32h2v1h-2zM20 32h3v1h-3zM24 32h1v1h-1zM26 32h1v1h-1zM29 32h1v1h-1zM32 32h1v1h-1z" fill="#0A2A5E"/></svg>
+    <div><strong>تابع حسابات النادي</strong>امسح الرمز
+      <span>linktr.ee/MISCLUB.UOH</span></div>
+  </div>
+  <button class="btn-home" id="homeBtn">العودة للرئيسية</button>
+</section>
+
+<script>
+(function(){
+  var CASES=[
+    {tag:"الحالة الأولى",title:"مشروع تقني متأخر (Scope Creep)",
+     text:"طلب العميل إضافة ميزات رئيسية قبل التسليم بأسبوعين، مع الالتزام بنفس الجدول الزمني ونفس الميزانية."},
+    {tag:"الحالة الثانية",title:"أزمة الميزانية المفاجئة",
+     text:"ارتفعت أسعار التجهيزات فجأة بنسبة 35% في منتصف الفعالية."},
+    {tag:"الحالة الثالثة",title:"صراع الصلاحيات وضعف التواصل",
+     text:"يتبادل فريق التقنية وفريق التسويق الاتهامات، ويتأخر تسليم المحتوى."},
+    {tag:"الحالة الرابعة",title:"استقالة عضو رئيسي مفاجئة",
+     text:"قبل موعد الفعالية بوقت قصير، يعلن عضو رئيسي في الفريق استقالته، ويحمل معه مهام ومعلومات لم تُوثَّق بعد."},
+    {tag:"الحالة الخامسة",title:"ضعف مشاركة الجمهور",
+     text:"قبل ساعات من انطلاق الفعالية، يتضح أن التسجيل والتفاعل أقل بكثير من المتوقع رغم كل الاستعدادات."}
+  ];
+  // محطات خريطة الطريق: كل محطة ترتبط بحالة (فهرسها في CASES)
+  var STATIONS=[
+    {ph:"Initiation",ord:"الأولى",ic:"🚀",c:4,short:"مرحلة البدء",x:8,y:68.2,pos:"dn"},
+    {ph:"Planning",ord:"الثانية",ic:"🧭",c:1,short:"مرحلة التخطيط  ",x:29,y:27.3,pos:"up"},
+    {ph:"Execution",ord:"الثالثة",ic:"🛠️",c:2,short:"مرحلة التنفيذ   ",x:50,y:68.2,pos:"dn"},
+    {ph:"Monitoring & Controlling",ord:"الرابعة",ic:"📊",c:0,short:" مرحلة المراقبة والتحكم ",x:71,y:27.3,pos:"up"},
+    {ph:"Closing",ord:"الخامسة",ic:"🏁",c:3,short:"مرحلة الاغلاق    ",x:92,y:68.2,pos:"dn"}
+  ];
+  STATIONS.forEach(function(st){CASES[st.c].tag="المحطة "+st.ord+" · "+st.ph});
+  var visited=[false,false,false,false,false];
+  var QUESTIONS={
+    1:"ما المشكلة الرئيسية في هذه الحالة؟",
+    2:"ما أكبر خطر أو أثر ممكن يحدث بسبب هذه المشكلة؟",
+    3:"ما الحلول أو القرارات التي تقترحها لمعالجة الحالة؟"
+  };
+  var SOLUTIONS=[
+    [{t:"نقبل كل الميزات ونطلب من الفريق العمل ساعات إضافية",r:"weak",w:"يرهق الفريق ويرفع احتمال الأخطاء، فيتأخر التسليم أو تنخفض الجودة."},
+     {t:"نجلس مع العميل ونرتب الميزات حسب الأولوية، ونسلّم الأهم في الموعد ونؤجل الباقي لمرحلة ثانية",r:"best",w:"يحافظ على الجدول والميزانية، ويُبقي العميل شريكاً في القرار."},
+     {t:"نرفض الطلب لأنه خارج الخطة",r:"ok",w:"يحمي الجدول، لكنه قد يضر بعلاقة العميل. الأفضل التفاوض قبل الرفض."}],
+    [{t:"نعيد ترتيب البنود، ونفاوض الموردين، ونبحث عن بدائل أو رعاة",r:"best",w:"يعالج الفجوة دون المساس بجودة الفعالية، ويوزع الأثر على أكثر من مصدر."},
+     {t:"نخفض جودة التجهيزات ونشتري الأرخص",r:"weak",w:"يوفر المال الآن، لكنه يضعف تجربة الحضور وصورة الفعالية."},
+     {t:"نلغي أو نقلّص جزءاً من الفعالية",r:"ok",w:"حل أخير مقبول إن لم تنجح البدائل، لكنه يقلل قيمة الفعالية."}],
+    [{t:"نحدد المخطئ منهما ونحاسبه أمام الجميع",r:"weak",w:"يزيد التوتر ويقتل التعاون، فالمشكلة في وضوح الأدوار لا في الأشخاص."},
+     {t:"نترك الفريقين يحلان الخلاف بنفسيهما",r:"ok",w:"قد ينجح أحياناً، لكن غياب التدخل يطيل التأخير."},
+     {t:"نعقد اجتماعاً قصيراً لتوضيح الأدوار، ونحدد قناة تواصل واحدة ومواعيد تسليم متفقاً عليها",r:"best",w:"يعالج السبب الجذري: غموض الصلاحيات وضعف التواصل."}],
+    [{t:"نحمّل أقرب زميل كل مهامه",r:"ok",w:"حل سريع، لكنه يرهق شخصاً واحداً ويكرر المشكلة نفسها."},
+     {t:"نوزّع مهامه فوراً، ونوثّق ما تبقّى، ونكلّف بديلاً، ونطلب من العضو المستقيل تسليم المعرفة",r:"best",w:"يحفظ استمرارية العمل ويقلل الاعتماد على شخص واحد."},
+     {t:"نؤجل الفعالية حتى نجد بديلاً مناسباً",r:"weak",w:"تأجيل غير مبرر يضيع الاستعدادات ويضر بالالتزام أمام الجمهور."}],
+    [{t:"نكثّف الترويج الفوري عبر الحسابات والأعضاء، ونضيف حوافز ومسابقات تجذب الحضور",r:"best",w:"يعالج السبب مباشرة ويستثمر الوقت المتبقي في رفع الإقبال."},
+     {t:"نلغي الفعالية لأن الحضور قليل",r:"weak",w:"إلغاء متسرع يهدر الجهد كله، ويمكن تحسين الحضور قبل ذلك."},
+     {t:"نقلّص الفعالية لتناسب العدد الحالي",r:"ok",w:"يخفف الهدر، لكنه لا يعالج سبب ضعف المشاركة."}]
+  ];
+  // أسئلة 1 و2 بصيغة اختيار من متعدد (لكل حالة)
+  var QA=[
+    {1:[{t:"ضعف إنتاجية الفريق",r:"ok",w:"ضغط الوقت حقيقي، لكنه نتيجة لتغيّر النطاق لا سببه."},
+        {t:"تغيّر نطاق المشروع مع بقاء الجدول والميزانية كما هما",r:"best",w:"هذا جوهر المشكلة: توسّع في المطلوب دون زيادة في الوقت أو المال."},
+        {t:"تأخر العميل في السداد",r:"weak",w:"الحالة لا تذكر أي مشكلة في السداد."}],
+     2:[{t:"تسليم متعجل بجودة منخفضة وإرهاق الفريق",r:"best",w:"هو الأثر الأخطر لأنه يمس جودة المنتج والفريق معاً."},
+        {t:"خسارة العميل بسبب رفض طلبه",r:"ok",w:"خطر وارد، لكنه أقل أثراً من فشل التسليم نفسه."},
+        {t:"لا خطر لأن الفريق سيتأقلم",r:"weak",w:"تجاهل المخاطر يؤدي غالباً إلى تأخر أكبر."}]},
+    {1:[{t:"اعتماد الفعالية على مورد واحد",r:"ok",w:"عامل مساعد، لكنه ليس المشكلة الأساسية."},
+        {t:"قلة عدد الحضور",r:"weak",w:"لا علاقة للحضور بارتفاع أسعار التجهيزات."},
+        {t:"فجوة مالية مفاجئة دون احتياطي كافٍ لمواجهتها",r:"best",w:"غياب الاحتياطي يحوّل أي ارتفاع في الأسعار إلى أزمة."}],
+     2:[{t:"تضرر سمعة النادي أمام الرعاة",r:"ok",w:"أثر محتمل، لكنه يأتي بعد تعثر الفعالية نفسها."},
+        {t:"عجز مالي يهدد إتمام الفعالية بالجودة المخطط لها",r:"best",w:"35% زيادة كبيرة قد تستهلك الميزانية بسرعة."},
+        {t:"لا أثر يُذكر لأن النسبة صغيرة",r:"weak",w:"زيادة بهذا الحجم في منتصف الفعالية ليست صغيرة."}]},
+    {1:[{t:"غموض الأدوار والصلاحيات وضعف قنوات التواصل بين الفريقين",r:"best",w:"هو السبب الجذري الذي يولّد الاتهامات والتأخير."},
+        {t:"قلة كفاءة فريق التسويق",r:"weak",w:"الاتهامات متبادلة، فلا دليل على أن طرفاً واحداً هو السبب."},
+        {t:"تأخر تسليم المحتوى",r:"ok",w:"هو العَرَض الظاهر وليس السبب."}],
+     2:[{t:"لا خطر لأن الخلاف شخصي وسينتهي",r:"weak",w:"الخلافات غير المعالجة تتصاعد ولا تختفي."},
+        {t:"تأخر نشر الإعلانات",r:"ok",w:"خطر قريب، لكنه جزء من مشكلة أوسع."},
+        {t:"تفكك الفريق وفشل الفعالية بسبب انعدام الثقة والتأخير المتراكم",r:"best",w:"الأثر الأكبر هو خسارة الثقة والتعاون."}]},
+    {1:[{t:"فقدان خبرة العضو فقط",r:"ok",w:"جزء من المشكلة، لكن الأعمق هو غياب التوثيق والبديل."},
+        {t:"تركّز المهام والمعرفة في شخص واحد دون توثيق أو بديل",r:"best",w:"هذا ما يحوّل استقالة واحدة إلى أزمة."},
+        {t:"قرار العضو بترك الفريق",r:"weak",w:"الاستقالة نتيجة وليست مشكلة إدارية بحد ذاتها."}],
+     2:[{t:"توقف مهام حيوية، وتعطّل الجدول، وتراجع معنويات الفريق",r:"best",w:"يجمع الأثر على العمل والفريق معاً."},
+        {t:"تحمّل بقية الأعضاء ضغطاً إضافياً",r:"ok",w:"خطر حقيقي، لكنه أحد نتائج التعطّل."},
+        {t:"لا أثر لأن الأعضاء سيعوّضونه فوراً",r:"weak",w:"التعويض الفوري غير واقعي دون توثيق وتسليم."}]},
+    {1:[{t:"تزامن الموعد مع مناسبات أخرى",r:"ok",w:"عامل خارجي، كان يمكن التحسّب له بالتخطيط."},
+        {t:"صغر حجم القاعة",r:"weak",w:"لا علاقة له بقلة التسجيل."},
+        {t:"ضعف الترويج واستهداف الجمهور قبل الفعالية",r:"best",w:"من لا يعرف بالفعالية أو لا يجد فيها فائدة لن يحضر."}],
+     2:[{t:"ضعف الأثر وضياع الجهد والميزانية وتراجع صورة النادي",r:"best",w:"أثر يتجاوز اليوم نفسه إلى سمعة النادي وأهدافه."},
+        {t:"ضغط أقل على الفريق",r:"weak",w:"قلة الحضور ليست ميزة، بل إهدار لما استُثمر."},
+        {t:"قلة المشاركين في الأنشطة فقط",r:"ok",w:"نتيجة مباشرة، لكن الأثر الأعمق على السمعة والأهداف."}]}
+  ];
+  // نسب أولية تحاكي اختيار زوار سابقين (بترتيب الخيارات أ، ب، ج) وتتحدث مع كل مشاركة
+  var SEEDS=[
+    {1:[30,55,15],2:[60,28,12],3:[15,65,20]},
+    {1:[25,15,60],2:[22,63,15],3:[60,12,28]},
+    {1:[58,12,30],2:[8,30,62],3:[10,22,68]},
+    {1:[35,50,15],2:[64,26,10],3:[30,52,18]},
+    {1:[30,8,62],2:[60,10,30],3:[64,8,28]}
+  ];
+  var LABELS={
+    1:{best:"✅ إجابة دقيقة",ok:"⚠️ جزء من الصورة",weak:"❌ ليست جوهر المشكلة"},
+    2:{best:"✅ الأثر الأكبر",ok:"⚠️ أثر محتمل لكنه أقل",weak:"❌ تقدير غير واقعي"},
+    3:{best:"✅ الحل الأنسب",ok:"⚠️ مقبول جزئياً",weak:"❌ حل ضعيف"}
+  };
+  var VKEY="mis_pm_votes_v1",memV={};
+  function loadV(){try{return JSON.parse(localStorage.getItem(VKEY))||memV}catch(_){return memV}}
+  function saveV(v){memV=v;try{localStorage.setItem(VKEY,JSON.stringify(v))}catch(_){}}
+  function vote(ci,q,i){var v=loadV(),k=ci+"-"+q;if(!v[k])v[k]=SEEDS[ci][q].slice();v[k][i]++;saveV(v);return v[k]}
+  function percents(c){
+    var t=c.reduce(function(a,b){return a+b},0),raw=c.map(function(x){return x*100/t}),fl=raw.map(Math.floor);
+    var left=100-fl.reduce(function(a,b){return a+b},0);
+    raw.map(function(r,i){return{i:i,f:r-Math.floor(r)}}).sort(function(a,b){return b.f-a.f}).slice(0,left).forEach(function(o){fl[o.i]++});
+    return{p:fl,total:t};
+  }
+  function showStats(counts,chosen){
+    var r=percents(counts),box=$("stats");box.innerHTML="<strong>كيف أجاب الزوار؟</strong>";
+    r.p.forEach(function(pc,i){
+      var row=document.createElement("div");row.className="srow"+(i===chosen?" me":"");
+      row.innerHTML='<span class="sl">'+"أبج"[i]+'</span><div class="sbar"><i></i></div><span class="sp">'+pc+'%</span>';
+      box.appendChild(row);
+      var bar=row.querySelector("i");
+      requestAnimationFrame(function(){requestAnimationFrame(function(){bar.style.width=pc+"%"})});
+    });
+    var n=document.createElement("div");n.className="snote";n.textContent="بناءً على "+r.total+" مشاركة، واختيارك مظلّل بالأزرق.";box.appendChild(n);
+    box.className="stats show";
+  }
+  var CASE_SECONDS=120;   // مدة كل حالة (دقيقتان)
+  var IDLE_MS=60000;      // مدة الخمول قبل العودة للرئيسية (60 ثانية)
+  var CLICK_GAP=350;      // أدنى فاصل بين نقرتين (منع النقر المزعج)
+
+  var $=function(id){return document.getElementById(id)};
+  var screens={welcome:$("welcome"),map:$("map"),challenge:$("challenge"),end:$("end")};
+  var overlay=$("overlay"),nums=document.querySelectorAll(".num"),dots=$("dots").children;
+  var idx=0,idleTimer=null,lastClick=0,busy=false,tick=null,deadline=0,expiring=false;
+
+  function fmt(sec){var m=Math.floor(sec/60),r=sec%60;return "⏱ "+(m<10?"0":"")+m+":"+(r<10?"0":"")+r}
+  function stopTimer(){clearInterval(tick);tick=null}
+  function startTimer(){
+    stopTimer();expiring=false;$("timeup").classList.remove("show");
+    deadline=Date.now()+CASE_SECONDS*1000;paintTimer();
+    tick=setInterval(paintTimer,250);
+  }
+  function paintTimer(){
+    var left=Math.max(0,Math.ceil((deadline-Date.now())/1000));
+    var low=left<=15;
+    $("timer").textContent=fmt(left);$("timer").classList.toggle("low",low);
+    $("tbar").classList.toggle("low",low);
+    $("tbar").firstElementChild.style.transform="scaleX("+Math.max(0,(deadline-Date.now())/(CASE_SECONDS*1000))+")";
+    if(left<=0&&!expiring){
+      expiring=true;closeCard();$("timeup").classList.add("show");
+      setTimeout(function(){
+        if(!screens.challenge.classList.contains("active"))return;
+        show("map");
+      },1800);
+    }
+  }
+  function show(name){
+    for(var k in screens) screens[k].classList.toggle("active",k===name);
+    if(name!=="challenge") stopTimer();
+    closeCard();
+    if(name==="welcome") visited=[false,false,false,false,false];
+    if(name==="map") paintMap();
+    if(name==="challenge") render(true);
+    resetIdle();
+  }
+  function render(noAnim){
+    var c=CASES[idx],body=$("caseBody");
+    function fill(){
+      $("caseTag").textContent=c.tag;$("caseTitle").textContent=c.title;$("caseText").textContent=c.text;
+      for(var i=0;i<dots.length;i++) dots[i].classList.toggle("on",i===idx);
+      body.classList.remove("out");busy=false;startTimer();
+    }
+    if(noAnim){fill();return}
+    busy=true;body.classList.add("out");setTimeout(fill,250);
+  }
+  function buildMap(){
+    var rm=$("roadmap");
+    STATIONS.forEach(function(st,i){
+      var b=document.createElement("button");
+      b.className="st "+st.pos;b.id="st"+i;
+      b.style.setProperty("--x",st.x+"%");b.style.setProperty("--y",st.y+"%");b.style.setProperty("--n",i);
+      b.setAttribute("aria-label","المحطة "+st.ord+": "+st.ph+" — "+st.short);
+      b.innerHTML='<span class="ci" aria-hidden="true">'+st.ic+'</span><span class="nb">'+(i+1)+'</span><span class="lab"><b></b><span></span></span>';
+      b.querySelector("b").textContent=st.ph;b.querySelector(".lab span").textContent=st.short;
+      b.addEventListener("click",guard(function(){visited[i]=true;idx=st.c;show("challenge")}));
+      rm.appendChild(b);
+    });
+  }
+  function paintMap(){
+    STATIONS.forEach(function(st,i){
+      var b=$("st"+i);b.classList.toggle("done",visited[i]);
+      b.querySelector(".nb").textContent=visited[i]?"✓":(i+1);
+    });
+  }
+  function openCard(q){
+    $("qNum").textContent=q;$("qText").textContent=QUESTIONS[q];
+    $("qCtx").textContent=CASES[idx].tag+": "+CASES[idx].title;
+    var box=$("opts"),fb=$("fb");box.innerHTML="";fb.className="fb";fb.innerHTML="";$("qHint").textContent="";
+    $("stats").className="stats";$("stats").innerHTML="";box.className="opts";
+    var list=(+q===3)?SOLUTIONS[idx]:QA[idx][q],ci=idx,qn=+q;
+    $("qHint").textContent="اختر الإجابة التي تراها الأنسب، وسترى كيف أجاب الزوار.";
+    list.forEach(function(o,i){
+      var b=document.createElement("button");b.className="opt";
+      b.innerHTML="<b>"+"أبج"[i]+"</b><span></span>";b.lastChild.textContent=o.t;
+      b.addEventListener("click",guard(function(){
+        if(box.classList.contains("done"))return;
+        box.classList.add("done");b.classList.add("chosen");
+        Array.prototype.forEach.call(box.children,function(c,j){if(list[j].r==="best")c.classList.add("correct")});
+        fb.className="fb "+o.r;fb.innerHTML="<strong></strong><span></span>";
+        fb.firstChild.textContent=LABELS[qn][o.r];fb.lastChild.textContent=o.w;
+        showStats(vote(ci,qn,i),i);
+      }));
+      box.appendChild(b);
+    });
+    for(var i=0;i<nums.length;i++) nums[i].classList.toggle("sel",nums[i].dataset.q==q);
+    overlay.classList.add("show");
+  }
+  function closeCard(){
+    overlay.classList.remove("show");
+    for(var i=0;i<nums.length;i++) nums[i].classList.remove("sel");
+  }
+
+  // منع النقر المزعج: تجاهل النقرات المتتابعة بسرعة
+  function guard(fn){
+    return function(e){
+      var now=Date.now();
+      if(now-lastClick<CLICK_GAP){e.preventDefault();return}
+      lastClick=now;fn(e);
+    };
+  }
+
+  $("startBtn").addEventListener("click",guard(function(){
+    show("map");
+    try{var el=document.documentElement;if(el.requestFullscreen&&!document.fullscreenElement)el.requestFullscreen().catch(function(){})}catch(_){}
+  }));
+  $("swapBtn").addEventListener("click",guard(function(){closeCard();show("map")}));
+  $("finishBtn").addEventListener("click",guard(function(){show("end")}));
+  for(var i=0;i<nums.length;i++) nums[i].addEventListener("click",guard(function(e){openCard(e.currentTarget.dataset.q)}));
+  $("closeBtn").addEventListener("click",guard(closeCard));
+  overlay.addEventListener("click",function(e){if(e.target===overlay&&Date.now()-lastClick>=CLICK_GAP){lastClick=Date.now();closeCard()}});
+  $("doneBtn").addEventListener("click",guard(function(){show("end")}));
+  $("homeBtn").addEventListener("click",guard(function(){idx=0;show("welcome")}));
+
+  // نظام الخمول
+  function resetIdle(){
+    clearTimeout(idleTimer);
+    idleTimer=setTimeout(function(){
+      if(!screens.welcome.classList.contains("active")){idx=0;show("welcome")}
+    },IDLE_MS);
+  }
+  ["pointerdown","pointermove","keydown","touchstart","wheel"].forEach(function(ev){
+    document.addEventListener(ev,resetIdle,{passive:true});
+  });
+
+  // وضع الكشك (Kiosk): منع القائمة، التحديد، السحب، التكبير، والرجوع
+  document.addEventListener("contextmenu",function(e){e.preventDefault()});
+  document.addEventListener("dragstart",function(e){e.preventDefault()});
+  document.addEventListener("selectstart",function(e){e.preventDefault()});
+  document.addEventListener("gesturestart",function(e){e.preventDefault()});
+  document.addEventListener("touchmove",function(e){if(e.touches.length>1)e.preventDefault()},{passive:false});
+  document.addEventListener("wheel",function(e){if(e.ctrlKey)e.preventDefault()},{passive:false});
+  document.addEventListener("keydown",function(e){
+    var k=e.key;
+    if((e.ctrlKey&&/[+\-=0swpuaf]/i.test(k))||k==="F5"||k==="F12"||(e.ctrlKey&&e.shiftKey&&/[ij]/i.test(k))) e.preventDefault();
+  });
+  history.pushState(null,"",location.href);
+  window.addEventListener("popstate",function(){history.pushState(null,"",location.href)});
+
+  buildMap();
+  resetIdle();
+})();
+</script>
+</body>
+</html>
